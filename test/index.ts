@@ -1,9 +1,10 @@
+import { IApiMap } from './../src/type';
 import Apis from "../dist/index.js";
 
 let serverMap = {
   baseServer: {
     default: true,
-    baseURL: "https://base.apis.com"
+    baseURL: "https://localhost.apis.com"
   },
   authServer: {
     baseURL: "https://auth.apis.com"
@@ -13,7 +14,7 @@ let serverMap = {
   }
 };
 
-let apiMap = {
+let apiMap: IApiMap = {
   getBaseInfo: {
     method: "get",
     url: "/info"
@@ -26,11 +27,11 @@ let apiMap = {
 };
 
 Apis.useReq(
-  function(config) {
+  function (config: { headers: { Authorization: string; }; }) {
     config.headers.Authorization = "Bearer";
     return config;
   },
-  function(error) {
+  function (error: any) {
     return Promise.reject(error);
   }
 );

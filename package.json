@@ -25,7 +25,6 @@
         "build": "rm -rf dist/*  &&  NODE_ENV=production rollup  -c",
         "build:win": "rm -rf dist/*  && cross-env NODE_ENV=production rollup  -c",
         "reload": "livereload 'src/'",
-        "ws": "node ./mock/ws.js",
         "lint": "eslint 'src/**/*.{ts}' --fix -o eslint_log.log",
         "test": "parcel test/index.html --out-dir test/dist",
         "watch": "npm-run-all --parallel reload dev test",
@@ -60,8 +59,7 @@
         "rollup-plugin-typescript2": "^0.27.1",
         "rollup-watch": "^4.3.1",
         "tslib": "^2.0.0",
-        "typescript": "^3.9.5",
-        "ws": "^7.3.0"
+        "typescript": "^3.9.5"
     },
     "config": {
         "commitizen": {

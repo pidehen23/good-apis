@@ -1,15 +1,17 @@
 import axios from "axios";
 
-class Apis {
-  serverMap: any;
-  apiMap: any;
-  instance: any;
-  static reqMiddleware: any;
-  static resMiddleware: any;
-  static useReq: () => void;
-  static useRes: () => void;
+import { IServerMap, IApiMap } from './type'
 
-  constructor(serverMap: any, apiMap: any) {
+class Apis {
+  private serverMap: IServerMap;
+  private apiMap: IApiMap;
+  private instance: any;
+  static reqMiddleware: any[];
+  static resMiddleware: any[];
+  static useReq: (...rest: any) => void;
+  static useRes: (...rest: any) => void;
+
+  constructor(serverMap: IServerMap, apiMap: IApiMap) {
     this.serverMap = serverMap;
     this.apiMap = apiMap;
     this.instance = {
@@ -50,7 +52,7 @@ class Apis {
     return base;
   }
 
-  format() {
+  private format() {
     for (const key of Object.keys(this.apiMap)) {
       const item = this.apiMap[key];
 
@@ -62,7 +64,7 @@ class Apis {
     }
   }
 
-  middleware() {
+  private middleware() {
     Apis.reqMiddleware.map(function (middleware: any) {
       axios.interceptors.request.use(...middleware);
     });
@@ -72,7 +74,7 @@ class Apis {
     });
   }
 
-  restful(url: string, rest: { [x: string]: any; }) {
+  private restful(url: string, rest: { [x: string]: any; }) {
     const regex = /\:[^/]*/g;
 
     return url.replace(regex, (p) => {
@@ -84,7 +86,8 @@ class Apis {
     });
   }
 
-  comboo(bf: { url: string; }, af: { rest: { [x: string]: any; }; url: string; }) {
+  private comboo(bf: { server?: string | undefined; url: any; method?: "get" | "post" | "put" | "delete"; },
+    af: { rest: { [x: string]: any; }; url: string; }) {
     if (af.rest) {
       af.url = this.restful(bf.url, af.rest);
     }
@@ -92,7 +95,7 @@ class Apis {
     return Object.assign({}, bf, af);
   }
 
-  namespace(obj: { [x: string]: any; }, keys: string | any[], cb: (config: any) => Promise<import("axios").AxiosResponse<any>>) {
+  private namespace(obj: { [x: string]: any; }, keys: string | any[], cb: (config: any) => Promise<import("axios").AxiosResponse<any>>) {
     const key = keys[0];
 
     if (keys.length === 1) {
@@ -103,7 +106,7 @@ class Apis {
     }
   }
 
-  combine() {
+  private combine() {
     for (const key of Object.keys(this.apiMap)) {
       const keys = key.replace(/^\//, "").split("/");
       this.namespace(this.instance, keys, (config) => {
