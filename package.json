@@ -1,6 +1,6 @@
 {
-    "name": "@template/apis",
-    "version": "0.0.1",
+    "name": "good-apis",
+    "version": "0.0.2",
     "description": "基于axios统一接口请求方案",
     "main": "dist/index.js",
     "module": "dist/index-esm-min.js",
