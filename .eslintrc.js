@@ -24,6 +24,8 @@ module.exports = {
     indent: [0, 2],
     quotes: ["error", "double"],
     semi: [1, "always"],
-    "no-useless-escape": [0, "off"]
+    "no-useless-escape": [0, "off"],
+    "no-unsafe-finally": "off",
+    "no-unused-vars": "off"
   }
 };
