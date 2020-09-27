@@ -17,49 +17,38 @@
         "url": "git@github.com:chenjiajing23/apis.git"
     },
     "keywords": [
+        "apis",
         "axios",
         "typescript"
     ],
     "scripts": {
-        "dev": "rollup -c --watch",
-        "build": "rm -rf dist/*  &&  NODE_ENV=production rollup  -c",
-        "build:win": "rm -rf dist/*  && cross-env NODE_ENV=production rollup  -c",
-        "reload": "livereload 'src/'",
-        "lint": "eslint 'src/**/*.{ts}' --fix -o eslint_log.log",
+        "build": "npm run clear && tsc",
+        "dev": "tsc -w",
+        "clear": "rimraf dist",
+        "fix": "eslint src --ext .tsx,.ts --color --fix",
         "test": "parcel test/index.html --out-dir test/dist",
-        "watch": "npm-run-all --parallel reload dev test",
         "gc": "git-cz"
     },
-    "dependencies": {
-        "axios": "^0.19.2"
+    "peerDependencies": {
+        "axios": "^0.20.0"
     },
+    "dependencies": {},
     "devDependencies": {
-        "@babel/core": "^7.10.3",
-        "@babel/plugin-transform-runtime": "^7.10.3",
-        "@babel/preset-env": "^7.10.3",
-        "@commitlint/config-conventional": "^9.0.1",
-        "@rollup/plugin-alias": "^3.1.1",
-        "@rollup/plugin-commonjs": "^13.0.0",
-        "@rollup/plugin-json": "^4.1.0",
-        "@rollup/plugin-node-resolve": "^8.1.0",
-        "@types/node": "^14.0.14",
-        "commitizen": "^4.1.2",
-        "core-js": "^3.6.5",
-        "cross-env": "^7.0.2",
-        "eslint": "^7.3.1",
-        "livereload": "^0.9.1",
-        "npm-run-all": "^4.1.5",
+        "@babel/core": "^7.11.6",
+        "@babel/plugin-transform-runtime": "^7.11.5",
+        "@babel/preset-env": "^7.11.5",
+        "@commitlint/config-conventional": "^11.0.0",
+        "@types/node": "^14.11.2",
+        "@typescript-eslint/parser": "^4.2.0",
+        "axios": "^0.20.0",
+        "commitizen": "^4.2.1",
+        "eslint": "^7.10.0",
+        "eslint-config-prettier": "^6.12.0",
         "parcel": "^1.12.4",
-        "prettier": "^2.0.5",
-        "rollup": "^2.18.1",
-        "rollup-plugin-babel": "^4.4.0",
-        "rollup-plugin-eslint": "^7.0.0",
-        "rollup-plugin-sourcemaps": "^0.6.2",
-        "rollup-plugin-terser": "^6.1.0",
-        "rollup-plugin-typescript2": "^0.27.1",
-        "rollup-watch": "^4.3.1",
-        "tslib": "^2.0.0",
-        "typescript": "^3.9.5"
+        "prettier": "^2.1.2",
+        "rimraf": "^3.0.2",
+        "tslib": "^2.0.1",
+        "typescript": "^4.0.3"
     },
     "config": {
         "commitizen": {
@@ -68,12 +57,12 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "sh ./blockfieldlint.sh  && lint-staged",
+            "pre-commit": "npm run fix  && lint-staged",
             "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
         }
     },
     "lint-staged": {
-        "*.{js,ts,tsx,jsx,css,less,md}": [
+        "src/**/*.ts": [
             "prettier --write",
             "git add"
         ]

@@ -1,8 +1,7 @@
-import Apis from "../dist";
+import Apis from "../dist/index";
 
 declare global {
   interface Window {
-    SDK: any;
     apis: Apis
   }
 }

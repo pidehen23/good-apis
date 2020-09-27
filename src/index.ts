@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
-import { IServerMap, IApiMap } from './type'
+import { IServerMap, IApiMap } from "./type";
 
 class Apis {
   private serverMap: IServerMap;
@@ -95,7 +95,7 @@ class Apis {
     return Object.assign({}, bf, af);
   }
 
-  private namespace(obj: { [x: string]: any; }, keys: string | any[], cb: (config: any) => Promise<import("axios").AxiosResponse<any>>) {
+  private namespace(obj: { [x: string]: any; }, keys: string | any[], cb: (config: any) => Promise<AxiosResponse<any>>) {
     const key = keys[0];
 
     if (keys.length === 1) {

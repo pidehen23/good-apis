@@ -12,6 +12,7 @@ module.exports = {
     apis: true,
     axios: true
   },
+  parser: "@typescript-eslint/parser",
   parserOptions: {
     sourceType: "module",
     ecmaFeatures: {

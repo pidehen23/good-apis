@@ -1,4 +1,4 @@
-import { IApiMap } from './../src/type';
+import { IApiMap } from "./../src/type";
 import Apis from "../dist/index.js";
 
 let serverMap = {
@@ -39,11 +39,3 @@ Apis.useReq(
 let apis = new Apis(serverMap, apiMap);
 
 window.apis = apis;
-
-apis.getBaseInfo();
-
-apis.user.postOrder({
-  rest: {
-    id: 1234
-  }
-});
