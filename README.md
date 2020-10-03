@@ -202,5 +202,5 @@ npm run major
 #### 发布到 npm
 
 ```shell
-npm run publish
+npm run pub
 ```
