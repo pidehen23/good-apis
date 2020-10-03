@@ -67,7 +67,7 @@ class Apis {
   }
 
   // 校验
-  get validate() {
+  private get validate() {
     if (this.serverMap && this.apiMap) {
       return true;
     }
@@ -76,7 +76,7 @@ class Apis {
   }
 
   // 设置baseUrl的key
-  get getBaseUrl() {
+  private get getBaseUrl() {
     let base = "";
 
     for (const key of Object.keys(this.serverMap)) {
