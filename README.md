@@ -149,7 +149,7 @@ Apis.useRes(
 
 ## Usage
 
-函数调用参数同 [config](https://github.com/axios/axios#interceptors)，并且会和`apiMap`中参数
+函数调用参数同 [config](https://github.com/axios/axios#interceptors)，并且会合并`apiMap`中参数
 
 ```ts
 {
