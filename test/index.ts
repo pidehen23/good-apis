@@ -28,7 +28,7 @@ const apiMap: IApiMap = {
   }
 };
 
-Apis.useReq(
+Apis.onUseReq(
   config => {
     config.headers.Authorization = "Bearer";
     return config;
@@ -38,7 +38,7 @@ Apis.useReq(
   }
 );
 
-Apis.useRes(
+Apis.onUseRes(
   res => {
     if (res.data && res.data.code === 1) {
       return res.data;

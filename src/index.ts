@@ -39,11 +39,11 @@ class Apis {
   private instance: IInstanceInfo;
   static reqMiddleware: any[];
   static resMiddleware: any[];
-  static useReq: <V = AxiosRequestConfig>(
+  static onUseReq: <V = AxiosRequestConfig>(
     onFulfilled?: (value: V) => V | Promise<V>,
     onRejected?: (error: AxiosError) => any
   ) => number;
-  static useRes: <V = AxiosResponse>(
+  static onUseRes: <V = AxiosResponse>(
     onFulfilled?: (value: V) => V | Promise<V>,
     onRejected?: (error: AxiosError) => any
   ) => number;
@@ -179,12 +179,12 @@ class Apis {
 Apis.reqMiddleware = [];
 Apis.resMiddleware = [];
 
-Apis.useReq = function () {
+Apis.onUseReq = function () {
   Apis.reqMiddleware.push(arguments);
   return arguments.length;
 };
 
-Apis.useRes = function () {
+Apis.onUseRes = function () {
   Apis.resMiddleware.push(arguments);
   return arguments.length;
 };

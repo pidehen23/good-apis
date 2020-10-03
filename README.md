@@ -119,25 +119,25 @@ e.g: auth/user/getInfo => auth.user.getInfo()
 
 ## Interceptors
 
-Apis 通过`useReq`,`useRes`两个接口对请求做拦截，可以多次调用，添加多个 middleware
+Apis 通过`onUseReq`,`onUseRes`两个接口对请求做拦截，可以多次调用，添加多个 middleware
 
-#### Apis.useReq(middleware) 请求拦截器
+#### Apis.onUseReq(middleware) 请求拦截器
 
 同 [axios.interceptors.request.use](https://github.com/axios/axios#interceptors)
 
 ```javascript
-Apis.useReq(function (config) {
+Apis.onUseReq(function (config) {
   config.headers.Authorization = "Bearer";
   return config;
 });
 ```
 
-#### Apis.useRes(middleware) 响应拦截器
+#### Apis.onUseRes(middleware) 响应拦截器
 
 同 [axios.interceptors.response.use](https://github.com/axios/axios#interceptors)
 
 ```ts
-Apis.useRes(
+Apis.onUseRes(
   res => {
     return res.data;
   },
