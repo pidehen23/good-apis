@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.4](https://github.com/chenjiajing23/apis/compare/v0.0.3...v0.0.4) (2020-10-03)
+
+
+### Bug Fixes
+
+* 🐛 eslint ([37b5c5d](https://github.com/chenjiajing23/apis/commit/37b5c5d088d617e0786beccd546c0281b90d3262))
+* 🐛 master ([dd4d71a](https://github.com/chenjiajing23/apis/commit/dd4d71a0691a5b7418a3baed1dfd6a97f8ae3001))
+* 🐛 master ([44abc0d](https://github.com/chenjiajing23/apis/commit/44abc0d2162cc522527e94d170a60137d521cf83))
+
 ### 0.0.3 (2020-10-03)
 
 
