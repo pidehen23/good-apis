@@ -4,7 +4,7 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse,
   Method
-} from 'axios'
+} from "axios"
 
 // server详情
 export interface IServerMap {
@@ -62,7 +62,7 @@ class Apis {
       this.combine()
       return (this.instance as unknown) as Apis
     } else {
-      console.error('apis: 参数不合法，请检查你的配置参数')
+      console.error("apis: 参数不合法，请检查你的配置参数")
     }
   }
 
@@ -71,13 +71,13 @@ class Apis {
     if (this.serverMap && this.apiMap) {
       return true
     }
-    console.error('请传入初始化参数')
+    console.error("请传入初始化参数")
     return false
   }
 
   // 设置baseUrl的key
   get getBaseUrl() {
-    let base = ''
+    let base = ""
 
     for (const key of Object.keys(this.serverMap)) {
       // 去数组第一个元素
@@ -91,7 +91,7 @@ class Apis {
     }
 
     if (!base) {
-      console.error('apis: 找不到默认服务器配置')
+      console.error("apis: 找不到默认服务器配置")
     }
 
     return base
@@ -164,7 +164,7 @@ class Apis {
 
   private combine() {
     for (const key of Object.keys(this.apiMap)) {
-      const keys = key.replace(/^\//, '').split('/')
+      const keys = key.replace(/^\//, "").split("/")
       this.namespace(this.instance, keys, config => {
         let result = this.apiMap[key]
         if (config) {
