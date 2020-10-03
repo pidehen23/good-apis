@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/chenjiajing23/apis/compare/v0.0.4...v0.0.5) (2020-10-03)
+
+
+### Bug Fixes
+
+* 🐛 master ([01b74a9](https://github.com/chenjiajing23/apis/commit/01b74a9e7e3c05a302fd09f07dd193fd2a166027))
+
 ### [0.0.4](https://github.com/chenjiajing23/apis/compare/v0.0.3...v0.0.4) (2020-10-03)
 
 
