@@ -35,7 +35,7 @@
         "patch": "standard-version -r patch",
         "minor": "standard-version -r minor",
         "major": "standard-version -r major",
-        "publish": "git push --follow-tags origin master && npm run build && npm publish"
+        "publish": "npm run build && npx git push --follow-tags origin master"
     },
     "peerDependencies": {
         "axios": "^0.20.0"
