@@ -1,41 +1,63 @@
-import { IApiMap } from "./../src/type";
-import Apis from "../dist/index.js";
+import Apis, { IApiMap } from '../dist/index'
 
 let serverMap = {
   baseServer: {
     default: true,
-    baseURL: "https://localhost.apis.com"
+    baseURL: 'https://base.apis.com'
   },
   authServer: {
-    baseURL: "https://auth.apis.com"
+    baseURL: 'https://auth.apis.com'
   },
   orderServer: {
-    baseURL: "http://localhost:4320"
+    baseURL: 'https://order.apis.com'
   }
-};
+}
 
-let apiMap: IApiMap = {
+const apiMap: IApiMap = {
   getBaseInfo: {
-    method: "get",
-    url: "/info"
+    server: 'baseServer',
+    method: 'get',
+    url: '/info'
   },
-  "user/postOrder": {
-    server: "orderServer",
-    method: "post",
-    url: "/order/:id"
+
+  'user/postOrder': {
+    server: 'orderServer',
+    method: 'post',
+    url: '/order/:id'
   }
-};
+}
 
 Apis.useReq(
-  function (config: { headers: { Authorization: string; }; }) {
-    config.headers.Authorization = "Bearer";
-    return config;
+  config => {
+    config.headers.Authorization = 'Bearer'
+    return config
   },
-  function (error: any) {
-    return Promise.reject(error);
+  error => {
+    return Promise.reject(error)
   }
-);
+)
 
-let apis = new Apis(serverMap, apiMap);
+Apis.useRes(
+  res => {
+    if (res.data && res.data.code === 1) {
+      return res.data
+    } else {
+      return Promise.reject(new Error(res.data.msg ?? '响应异常'))
+    }
+  },
+  err => {
+    return Promise.reject(err)
+  }
+)
 
-window.apis = apis;
+let apis = new Apis(serverMap, apiMap)
+
+window.apis = apis
+
+apis.getBaseInfo()
+
+apis.user.postOrder({
+  rest: {
+    id: 1234
+  }
+})

@@ -1,133 +1,192 @@
-import axios, { AxiosResponse } from "axios";
+import axios, {
+  AxiosError,
+  AxiosPromise,
+  AxiosRequestConfig,
+  AxiosResponse,
+  Method
+} from 'axios'
 
-import { IServerMap, IApiMap } from "./type";
+// server详情
+export interface IServerMap {
+  [key: string]: {
+    default?: boolean // 是否默认baseUrl
+    baseURL?: string // baseUrl
+  }
+}
+
+export interface IApiConfig extends AxiosRequestConfig {
+  server?: string // 服务器配置
+  url: string // 请求pathname（不带baseUrl）如：'api/info'
+  method?: Method // 请求方法 列如："get" | "GET" | "delete" | "DELETE" | "head" | "HEAD" | "options" | "OPTIONS" | "post" | "POST" | "put" | "PUT" | "patch" | "PATCH" | "purge" | "PURGE" | "link" | "LINK" | "unlink" | "UNLINK"
+}
+// api接口详情
+export interface IApiMap {
+  [key: string]: IApiConfig
+}
+
+// rest
+export interface IRestInfo {
+  [key: string]: number | string
+}
+
+export interface IInstanceInfo {
+  [key: string]: <T = any>(config: AxiosRequestConfig) => AxiosPromise<T>
+}
 
 class Apis {
-  private serverMap: IServerMap;
-  private apiMap: IApiMap;
-  private instance: any;
-  static reqMiddleware: any[];
-  static resMiddleware: any[];
-  static useReq: (...rest: any) => void;
-  static useRes: (...rest: any) => void;
+  private serverMap: IServerMap
+  private apiMap: IApiMap
+  private instance: IInstanceInfo
+  static reqMiddleware: any[]
+  static resMiddleware: any[]
+  static useReq: <V = AxiosRequestConfig>(
+    onFulfilled?: (value: V) => V | Promise<V>,
+    onRejected?: (error: AxiosError) => any
+  ) => number
+  static useRes: <V = AxiosResponse>(
+    onFulfilled?: (value: V) => V | Promise<V>,
+    onRejected?: (error: AxiosError) => any
+  ) => number
 
   constructor(serverMap: IServerMap, apiMap: IApiMap) {
-    this.serverMap = serverMap;
-    this.apiMap = apiMap;
+    this.serverMap = serverMap
+    this.apiMap = apiMap
+
     this.instance = {
-      gRequest: axios.request,
-    };
+      gRequest: axios.request
+    }
 
     if (this.validate) {
-      this.format();
-      this.middleware();
-      this.combine();
-      return this.instance;
+      this.format()
+      this.middleware()
+      this.combine()
+      return (this.instance as unknown) as Apis
     } else {
-      console.error("apis: 参数不合法，请检查你的配置参数");
+      console.error('apis: 参数不合法，请检查你的配置参数')
     }
   }
 
+  // 校验
   get validate() {
-    return true;
+    if (this.serverMap && this.apiMap) {
+      return true
+    }
+    console.error('请传入初始化参数')
+    return false
   }
 
-  get base() {
-    let base = "";
+  // 设置baseUrl的key
+  get getBaseUrl() {
+    let base = ''
 
     for (const key of Object.keys(this.serverMap)) {
+      // 去数组第一个元素
       if (!base) {
-        base = key;
+        base = key
       }
-
+      // 去 default=true 的元素
       if (this.serverMap[key].default) {
-        base = key;
+        base = key
       }
     }
 
     if (!base) {
-      console.error("apis: 找不到默认服务器配置");
+      console.error('apis: 找不到默认服务器配置')
     }
 
-    return base;
+    return base
   }
 
+  // 处理apiMap
   private format() {
     for (const key of Object.keys(this.apiMap)) {
-      const item = this.apiMap[key];
+      const item = this.apiMap[key]
 
       if (!item.server) {
-        item.server = this.base;
+        item.server = this.getBaseUrl
       }
 
-      this.apiMap[key] = Object.assign({}, this.serverMap[item.server], item);
+      this.apiMap[key] = Object.assign({}, this.serverMap[item.server], item)
     }
   }
 
   private middleware() {
-    Apis.reqMiddleware.map(function (middleware: any) {
-      axios.interceptors.request.use(...middleware);
-    });
+    Apis.reqMiddleware.map(middleware => {
+      axios.interceptors.request.use(...middleware)
+    })
 
-    Apis.resMiddleware.map(function (middleware: any) {
-      axios.interceptors.response.use(...middleware);
-    });
+    Apis.resMiddleware.map(middleware => {
+      axios.interceptors.response.use(...middleware)
+    })
   }
 
-  private restful(url: string, rest: { [x: string]: any; }) {
-    const regex = /\:[^/]*/g;
+  // rest
+  private restful(url: string, rest: IRestInfo) {
+    const regex = /\:[^/]*/g
 
-    return url.replace(regex, (p) => {
-      const key = p.slice(1);
-      if (rest[key]) {
-        return rest[key];
+    return url.replace(regex, p => {
+      const key = p.slice(1)
+      const value = String(rest[key])
+      if (value) {
+        return value
       }
-      return p;
-    });
+      return p
+    })
   }
 
-  private comboo(bf: { server?: string | undefined; url: any; method?: "get" | "post" | "put" | "delete"; },
-    af: { rest: { [x: string]: any; }; url: string; }) {
+  private comboo(bf: IApiConfig, af: { rest: IRestInfo; url: string }) {
     if (af.rest) {
-      af.url = this.restful(bf.url, af.rest);
+      af.url = this.restful(bf.url, af.rest)
     }
 
-    return Object.assign({}, bf, af);
+    return Object.assign({}, bf, af)
   }
 
-  private namespace(obj: { [x: string]: any; }, keys: string | any[], cb: (config: any) => Promise<AxiosResponse<any>>) {
-    const key = keys[0];
+  /**
+   * @description 命名空间调用
+   * @example
+   * @return
+   */
+  private namespace(
+    obj: IInstanceInfo,
+    keys: string[],
+    cb: (config: { rest: IRestInfo; url: string }) => Promise<AxiosResponse<any>>
+  ) {
+    const key = keys[0]
 
     if (keys.length === 1) {
-      obj[key] = obj[key] || cb;
+      obj[key] = obj[key] || cb
     } else {
-      obj[key] = obj[key] || {};
-      this.namespace(obj[key], keys.slice(1), cb);
+      obj[key] = obj[key] || {}
+      this.namespace(obj[key] as any, keys.slice(1), cb)
     }
   }
 
   private combine() {
     for (const key of Object.keys(this.apiMap)) {
-      const keys = key.replace(/^\//, "").split("/");
-      this.namespace(this.instance, keys, (config) => {
-        let result = this.apiMap[key];
+      const keys = key.replace(/^\//, '').split('/')
+      this.namespace(this.instance, keys, config => {
+        let result = this.apiMap[key]
         if (config) {
-          result = this.comboo(this.apiMap[key], config);
+          result = this.comboo(this.apiMap[key], config)
         }
-        return axios.request(result);
-      });
+        return axios.request(result)
+      })
     }
   }
 }
 
-Apis.reqMiddleware = [];
-Apis.resMiddleware = [];
+Apis.reqMiddleware = []
+Apis.resMiddleware = []
 
 Apis.useReq = function () {
-  Apis.reqMiddleware.push(arguments);
-};
-Apis.useRes = function () {
-  Apis.resMiddleware.push(arguments);
-};
+  Apis.reqMiddleware.push(arguments)
+  return arguments.length
+}
 
-export default Apis;
+Apis.useRes = function () {
+  Apis.resMiddleware.push(arguments)
+  return arguments.length
+}
+
+export default Apis
