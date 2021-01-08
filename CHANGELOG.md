@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.10](https://github.com/chenjiajing23/apis/compare/v0.0.9...v0.0.10) (2021-01-08)
+
+
+### Features
+
+* 🎸 master ([8e3efa8](https://github.com/chenjiajing23/apis/commit/8e3efa8087b2d1569f2cf352ef4ea6f406294e0f))
+
+
+### Bug Fixes
+
+* 🐛 master ([f18d515](https://github.com/chenjiajing23/apis/commit/f18d5154badaf12341438664ef7b9f386f016463))
+* 🐛 update pack ([22e1554](https://github.com/chenjiajing23/apis/commit/22e155453013af0426c77a822037a5508cb66a40))
+
 ### [0.0.9](https://github.com/chenjiajing23/apis/compare/v0.0.8...v0.0.9) (2020-10-03)
 
 ### [0.0.8](https://github.com/chenjiajing23/apis/compare/v0.0.7...v0.0.8) (2020-10-03)
