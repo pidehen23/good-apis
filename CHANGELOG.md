@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.11](https://github.com/chenjiajing23/apis/compare/v0.0.10...v0.0.11) (2021-03-15)
+
+
+### Features
+
+* 🎸 master ([0886b69](https://github.com/chenjiajing23/apis/commit/0886b6937a42ba4297a0e1e611eb6927806b7431))
+
 ### [0.0.10](https://github.com/chenjiajing23/apis/compare/v0.0.9...v0.0.10) (2021-01-08)
 
 
